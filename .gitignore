@@ -1,6 +1,10 @@
-*.class
 /target
 .idea
+/MRF24j40/target
+/IEEE802154/target
+*.iml
+
+*.class
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
