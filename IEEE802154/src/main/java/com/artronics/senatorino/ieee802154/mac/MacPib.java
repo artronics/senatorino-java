@@ -18,5 +18,10 @@ public class MacPib
      * <dt>Default: </dt><dd>Implementation specific</dd>
      * </dl>
      */
-    private byte[] macExtendedAddress = new byte[4];
+    byte[] macExtendedAddress = new byte[4];
+
+    public byte[] getMacExtendedAddress()
+    {
+        return macExtendedAddress;
+    }
 }
