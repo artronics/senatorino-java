@@ -7,7 +7,7 @@ public class Registers
 {
     public enum ControlReg
     {
-        AKCTMOUT(0x12),
+        ACKTMOUT(0x12),
         SOFTRST(0x2A),
         RFCTL(0x36);
         private int address;

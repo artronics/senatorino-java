@@ -45,12 +45,12 @@ public class App
         System.out.println("-----------------------------------------------");
         System.out.println(((result[0] << 8) | result[1]) & 0x3FF);
 
-//        int data = mrf24J40.read(Registers.ControlReg.AKCTMOUT);
+//        int data = mrf24J40.read(Registers.ControlReg.ACKTMOUT);
 //        System.out.println(Integer.toHexString(data));
         System.out.println("write 50");
-//        mrf24J40.write(Mrf24j40SpiIoOperation.ControlRegisters.AKCTMOUT, (byte) 50);
+//        mrf24J40.write(Mrf24j40SpiIoOperation.ControlRegisters.ACKTMOUT, (byte) 50);
 
-//        data = mrf24J40.read(Mrf24j40SpiIoOperation.ControlRegisters.AKCTMOUT);
+//        data = mrf24J40.read(Mrf24j40SpiIoOperation.ControlRegisters.ACKTMOUT);
 //        System.out.println(Integer.toHexString(data));
     }
 
