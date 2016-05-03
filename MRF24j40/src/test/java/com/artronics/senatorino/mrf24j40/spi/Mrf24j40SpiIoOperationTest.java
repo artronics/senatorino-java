@@ -2,12 +2,9 @@ package com.artronics.senatorino.mrf24j40.spi;
 
 import com.artronics.senatorino.mrf24j40.registers.Registers;
 import com.pi4j.io.spi.SpiDevice;
-import com.pi4j.io.spi.impl.SpiDeviceImpl;
-import com.sun.tools.javac.code.Attribute;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 

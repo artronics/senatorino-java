@@ -8,4 +8,5 @@ import java.util.EnumSet;
 public interface Transceiver
 {
     void reset(EnumSet<ResetType> resetType) throws IOException;
+
 }

@@ -36,4 +36,5 @@ public enum MacConstants
     {
         this.value = value;
     }
+
 }

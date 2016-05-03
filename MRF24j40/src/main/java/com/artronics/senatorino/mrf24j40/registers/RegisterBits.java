@@ -9,4 +9,5 @@ public class RegisterBits
 
     //RFCTL 0x36
     public final static byte RFRST = 1 << 2;
+
 }

@@ -94,5 +94,4 @@ public class Mrf24j40Transceiver implements Transceiver
             e.printStackTrace();
         }
     }
-
 }

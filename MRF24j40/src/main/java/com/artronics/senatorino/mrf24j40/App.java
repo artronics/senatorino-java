@@ -1,11 +1,17 @@
 package com.artronics.senatorino.mrf24j40;
 
+import com.artronics.senatorino.ieee802154.mac.reset.ResetType;
+import com.artronics.senatorino.ieee802154.transceiver.Transceiver;
+import com.artronics.senatorino.mrf24j40.registers.Registers;
 import com.artronics.senatorino.mrf24j40.spi.Mrf24j40SpiIoOperation;
+import com.artronics.senatorino.mrf24j40.spi.SpiIoOperation;
+import com.artronics.senatorino.mrf24j40.transceiver.Mrf24j40Transceiver;
 import com.pi4j.io.spi.SpiChannel;
 import com.pi4j.io.spi.SpiDevice;
 import com.pi4j.io.spi.SpiFactory;
 
 import java.io.IOException;
+import java.util.EnumSet;
 
 public class App
 {
@@ -45,10 +51,16 @@ public class App
         System.out.println("-----------------------------------------------");
         System.out.println(((result[0] << 8) | result[1]) & 0x3FF);
 
-//        int data = mrf24J40.read(Registers.ControlReg.ACKTMOUT);
-//        System.out.println(Integer.toHexString(data));
+        SpiIoOperation spiOp = new Mrf24j40SpiIoOperation(spi);
+        int data = spiOp.read(Registers.ControlReg.ACKTMOUT);
+        System.out.println(Integer.toHexString(data));
         System.out.println("write 50");
+        Transceiver mrf = new Mrf24j40Transceiver(spiOp);
+        mrf.reset(EnumSet.of(ResetType.MAC));
+        data = spiOp.read(Registers.ControlReg.ACKTMOUT);
+        System.out.println(Integer.toHexString(data));
 //        mrf24J40.write(Mrf24j40SpiIoOperation.ControlRegisters.ACKTMOUT, (byte) 50);
+
 
 //        data = mrf24J40.read(Mrf24j40SpiIoOperation.ControlRegisters.ACKTMOUT);
 //        System.out.println(Integer.toHexString(data));

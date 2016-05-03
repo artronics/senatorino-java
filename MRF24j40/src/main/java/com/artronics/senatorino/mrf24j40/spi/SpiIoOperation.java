@@ -13,4 +13,5 @@ public interface SpiIoOperation
     void update(Registers.ControlReg address, byte flags) throws IOException;
 
     void update(Registers.ControlReg address, byte flags, boolean isReset) throws IOException;
+
 }

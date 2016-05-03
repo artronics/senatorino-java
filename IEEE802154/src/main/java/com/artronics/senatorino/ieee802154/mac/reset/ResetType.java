@@ -6,4 +6,5 @@ public enum ResetType
     POWER_MANAGEMENT,
     BASE_BAND,
     RF,
+
 }

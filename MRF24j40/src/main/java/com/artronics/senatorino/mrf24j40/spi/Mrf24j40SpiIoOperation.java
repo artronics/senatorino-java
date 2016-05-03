@@ -56,4 +56,5 @@ public class Mrf24j40SpiIoOperation implements SpiIoOperation
             update(address, flags);
 
     }
+
 }
