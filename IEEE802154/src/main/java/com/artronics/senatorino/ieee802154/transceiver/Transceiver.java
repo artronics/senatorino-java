@@ -1,12 +1,8 @@
 package com.artronics.senatorino.ieee802154.transceiver;
 
-import com.artronics.senatorino.ieee802154.mac.reset.ResetType;
+import com.artronics.senatorino.ieee802154.mac.reset.Reset;
 
-import java.io.IOException;
-import java.util.EnumSet;
-
-public interface Transceiver
+public interface Transceiver extends Reset
 {
-    void reset(EnumSet<ResetType> resetType) throws IOException;
 
 }

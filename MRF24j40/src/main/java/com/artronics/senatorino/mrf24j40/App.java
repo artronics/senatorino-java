@@ -1,6 +1,6 @@
 package com.artronics.senatorino.mrf24j40;
 
-import com.artronics.senatorino.ieee802154.mac.reset.ResetType;
+import com.artronics.senatorino.ieee802154.mac.reset.Reset;
 import com.artronics.senatorino.ieee802154.transceiver.Transceiver;
 import com.artronics.senatorino.mrf24j40.registers.Registers;
 import com.artronics.senatorino.mrf24j40.spi.Mrf24j40SpiIoOperation;
@@ -56,7 +56,9 @@ public class App
         System.out.println(Integer.toHexString(data));
         System.out.println("write 50");
         Transceiver mrf = new Mrf24j40Transceiver(spiOp);
-        mrf.reset(EnumSet.of(ResetType.MAC));
+
+        mrf.reset(EnumSet.of(Reset.ResetType.MAC));
+
         data = spiOp.read(Registers.ControlReg.ACKTMOUT);
         System.out.println(Integer.toHexString(data));
 //        mrf24J40.write(Mrf24j40SpiIoOperation.ControlRegisters.ACKTMOUT, (byte) 50);

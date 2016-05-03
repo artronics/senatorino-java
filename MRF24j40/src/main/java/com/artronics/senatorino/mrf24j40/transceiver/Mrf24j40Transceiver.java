@@ -1,6 +1,5 @@
 package com.artronics.senatorino.mrf24j40.transceiver;
 
-import com.artronics.senatorino.ieee802154.mac.reset.ResetType;
 import com.artronics.senatorino.ieee802154.transceiver.Transceiver;
 import com.artronics.senatorino.mrf24j40.registers.RegisterBits;
 import com.artronics.senatorino.mrf24j40.registers.Registers;
@@ -9,7 +8,7 @@ import com.artronics.senatorino.mrf24j40.spi.SpiIoOperation;
 import java.io.IOException;
 import java.util.EnumSet;
 
-import static com.artronics.senatorino.ieee802154.mac.reset.ResetType.*;
+import static com.artronics.senatorino.ieee802154.mac.reset.Reset.ResetType.*;
 
 public class Mrf24j40Transceiver implements Transceiver
 {
