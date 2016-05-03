@@ -2,27 +2,40 @@ package com.artronics.senatorino.mrf24j40.transceiver;
 
 import com.artronics.senatorino.ieee802154.mac.reset.ResetType;
 import com.artronics.senatorino.ieee802154.transceiver.Transceiver;
+import com.artronics.senatorino.mrf24j40.registers.RegisterBits;
 import com.artronics.senatorino.mrf24j40.registers.Registers;
+import com.artronics.senatorino.mrf24j40.spi.SpiIoOperation;
 
+import java.io.IOException;
 import java.util.EnumSet;
 
 import static com.artronics.senatorino.ieee802154.mac.reset.ResetType.*;
 
 public class Mrf24j40Transceiver implements Transceiver
 {
+    private SpiIoOperation spi;
+
+    public Mrf24j40Transceiver(SpiIoOperation spi)
+    {
+        this.spi = spi;
+    }
 
     /**
-     * <p>MRF24J40 has four reset types. 1.Power-On-Reset 2.With Reset pin 3.Software Reset 4.RF State-Machine Reset.
+     * <p>Mrf24j40SpiIoOperation has four reset types. 1.Power-On-Reset 2.With Reset pin 3.Software Reset 4.RF
+     * State-Machine Reset.
      * See <em>section 3.0</em> of Datasheet</p>
      * <ul>
-     * <li>Power-on-Reset: The MRF24J40 has built-in Power-on Reset circuitry that will automatically reset all control
-     * registers when power is applied. It is recommended to delay 2 ms after a Reset before accessing the MRF24J40 to
+     * <li>Power-on-Reset: The Mrf24j40SpiIoOperation has built-in Power-on Reset circuitry that will automatically
+     * reset all control
+     * registers when power is applied. It is recommended to delay 2 ms after a Reset before accessing the
+     * Mrf24j40SpiIoOperation to
      * allow the RF circuitry to start up and stabilize.</li>
      * <p>
-     * <li>RESET Pin: The MRF24J40 can be reset by the host microcontroller by asserting the RESET pin 13 low. All
-     * control registers will be reset. The MRF24J40 will be released from Reset approximately 250 us after RESET is
+     * <li>RESET Pin: The Mrf24j40SpiIoOperation can be reset by the host microcontroller by asserting the RESET pin
+     * 13 low. All
+     * control registers will be reset. The Mrf24j40SpiIoOperation will be released from Reset approximately 250 us after RESET is
      * released. The RESET pin has an internal weak pull-up resistor. It is recommended to delay 2 ms after a Reset
-     * before accessing the MRF24J40 to allow the RF circuitry to start up and stabilize.</li>
+     * before accessing the Mrf24j40SpiIoOperation to allow the RF circuitry to start up and stabilize.</li>
      * <p>
      * <li>Software Reset: A Software Reset can be performed by the host microcontroller. The power management
      * circuitry
@@ -43,41 +56,43 @@ public class Mrf24j40Transceiver implements Transceiver
      * </ul>
      */
     @Override
-    public void reset(EnumSet<ResetType> resetType)
+    public void reset(EnumSet<ResetType> resetType) throws IOException
     {
-        EnumSet<Registers.SOFTRST> reset = null;
+        byte sftReset = 0;
 
         if (resetType.contains(MAC))
-            reset.add(Registers.SOFTRST.RSTMAC);
+            sftReset |= RegisterBits.RSTMAC;
         if (resetType.contains(POWER_MANAGEMENT))
-            reset.add(Registers.SOFTRST.RSTPWR);
+            sftReset |= RegisterBits.RSTPWR;
         if (resetType.contains(BASE_BAND))
-            reset.add(Registers.SOFTRST.RSTBB);
+            sftReset |= RegisterBits.RSTBB;
 
-        performSoftReset(reset);
+        performSoftReset(sftReset);
 
         if (resetType.contains(RF)) {
-            EnumSet<Registers.RFCTL> rfReset = null;
-            rfReset.add(Registers.RFCTL.RFRST);
+            byte rfReset = RegisterBits.RFRST;
 
             performRfReset(rfReset);
         }
 
     }
 
-    private int a = 0;
-
-    private void performSoftReset(EnumSet<Registers.SOFTRST> reset)
+    private void performSoftReset(byte sftReset) throws IOException
     {
-        reset.forEach(b ->
-                      {
-                          a = a | b.getBit();
-                      });
+        spi.update(Registers.ControlReg.SOFTRST, sftReset);
     }
 
-    private void performRfReset(EnumSet<Registers.RFCTL> rfReset)
+    private void performRfReset(byte rfReset) throws IOException
     {
+        spi.update(Registers.ControlReg.RFCTL, rfReset);
+        spi.update(Registers.ControlReg.RFCTL, rfReset, true);
 
+        // There is a need for 192 us delay
+        try {
+            Thread.sleep(1);
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

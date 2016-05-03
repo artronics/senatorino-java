@@ -23,10 +23,10 @@ public class AddressHelper
         /* For Read Mode last bit must be 0 + 4 bits of don't care */
         /* For Long Address first bit must be 1 */
         msb = (byte) (
-                (((address & 0xFFFF) >> 3) & 0x7F) | 0x80
+                ((address >> 3) & 0x7F) | 0x80
         );
         lsb = (byte) (
-                ((address & 0xFFFF) & 0x07) << 5
+                (address & 0x07) << 5
         );
 
         byte b[] = new byte[2];

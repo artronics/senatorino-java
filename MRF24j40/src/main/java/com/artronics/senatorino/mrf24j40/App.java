@@ -1,7 +1,6 @@
 package com.artronics.senatorino.mrf24j40;
 
-import com.artronics.senatorino.mrf24j40.registers.Registers;
-import com.artronics.senatorino.mrf24j40.spi.MRF24J40;
+import com.artronics.senatorino.mrf24j40.spi.Mrf24j40SpiIoOperation;
 import com.pi4j.io.spi.SpiChannel;
 import com.pi4j.io.spi.SpiDevice;
 import com.pi4j.io.spi.SpiFactory;
@@ -10,10 +9,10 @@ import java.io.IOException;
 
 public class App
 {
-    // Spi device
+    // SpiIoOperation device
     public static SpiDevice spi = null;
 
-    // Spi operations
+    // SpiIoOperation operations
     public static byte INIT_CMD = (byte) 0xD0;
 
     public static void main(String[] args) throws IOException, InterruptedException
@@ -22,7 +21,7 @@ public class App
 
         System.out.println("<--Pi4J--> SPI test program using MCP3002 AtoD Chip");
 
-        // create Spi object instance for Spi for communication
+        // create Spi object instance for SpiIoOperation for communication
         spi = SpiFactory.getInstance(SpiChannel.CS0,
                                      SpiDevice.DEFAULT_SPI_SPEED, // default spi speed 1 MHz
                                      SpiDevice.DEFAULT_SPI_MODE); // default spi mode 0
@@ -46,13 +45,12 @@ public class App
         System.out.println("-----------------------------------------------");
         System.out.println(((result[0] << 8) | result[1]) & 0x3FF);
 
-        MRF24J40 mrf24J40 = new MRF24J40(spi);
 //        int data = mrf24J40.read(Registers.ControlReg.AKCTMOUT);
 //        System.out.println(Integer.toHexString(data));
         System.out.println("write 50");
-//        mrf24J40.write(MRF24J40.ControlRegisters.AKCTMOUT, (byte) 50);
+//        mrf24J40.write(Mrf24j40SpiIoOperation.ControlRegisters.AKCTMOUT, (byte) 50);
 
-//        data = mrf24J40.read(MRF24J40.ControlRegisters.AKCTMOUT);
+//        data = mrf24J40.read(Mrf24j40SpiIoOperation.ControlRegisters.AKCTMOUT);
 //        System.out.println(Integer.toHexString(data));
     }
 

@@ -27,25 +27,4 @@ public class Registers
             return createShortWriteAddr(address);
         }
     }
-
-    public enum SOFTRST
-    {
-        RSTMAC,
-        RSTBB,
-        RSTPWR;
-
-        public int getBit()
-        {
-            return 1 << this.ordinal();
-        }
-    }
-
-    public enum RFCTL
-    {
-        RFRXMODE,
-        RFTXMODE,
-        RFRST,
-        WAKECNT7,
-        WAKECNT8
-    }
 }
