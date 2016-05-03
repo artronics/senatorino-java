@@ -2,7 +2,11 @@ package com.artronics.senatorino.mrf24j40.transceiver;
 
 import com.artronics.senatorino.ieee802154.mac.reset.ResetType;
 import com.artronics.senatorino.ieee802154.transceiver.Transceiver;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import com.artronics.senatorino.mrf24j40.registers.Registers;
+
+import java.util.EnumSet;
+
+import static com.artronics.senatorino.ieee802154.mac.reset.ResetType.*;
 
 public class Mrf24j40Transceiver implements Transceiver
 {
@@ -20,14 +24,18 @@ public class Mrf24j40Transceiver implements Transceiver
      * released. The RESET pin has an internal weak pull-up resistor. It is recommended to delay 2 ms after a Reset
      * before accessing the MRF24J40 to allow the RF circuitry to start up and stabilize.</li>
      * <p>
-     * <li>Software Reset: A Software Reset can be performed by the host microcontroller. The power management circuitry
+     * <li>Software Reset: A Software Reset can be performed by the host microcontroller. The power management
+     * circuitry
      * is reset by setting the RSTPWR (0x2A&lt;2&gt;) bit to '1'. The control registers retain their values. The
-     * baseband circuitry is reset by setting the RSTBB (0x2A<1>) bit to '1'. The control registers retain their values.
+     * baseband circuitry is reset by setting the RSTBB (0x2A<1>) bit to '1'. The control registers retain their
+     * values.
      * The MAC circuitry is reset by setting the RSTMAC (0x2A<0>) bit to '1'. All control registers will be reset. The
-     * Resets can be performed individually or together. The bit(s) will be automatically cleared to '0' by hardware. No
+     * Resets can be performed individually or together. The bit(s) will be automatically cleared to '0' by hardware.
+     * No
      * delay is necessary after a Software Reset.</li>
      * <p>
-     * <li>RF State Machine Reset: Perform an RF State Machine Reset by setting to '1' the RFRST (RFCTL 0x36<2>) bit and
+     * <li>RF State Machine Reset: Perform an RF State Machine Reset by setting to '1' the RFRST (RFCTL 0x36<2>) bit
+     * and
      * then clearing to '0'. Delay at least 192 us after performing to allow the RF circuitry to calibrate. The control
      * registers retain their values.
      * <em>Note: The RF state machine should be Reset after the frequency channel has been changed (RFCON0
@@ -35,14 +43,41 @@ public class Mrf24j40Transceiver implements Transceiver
      * </ul>
      */
     @Override
-    public void reset(ResetType resetType)
+    public void reset(EnumSet<ResetType> resetType)
     {
-        switch (resetType) {
-            case SOFTWARE:
+        EnumSet<Registers.SOFTRST> reset = null;
 
-                break;
-            case RF:
-                throw new NotImplementedException();
+        if (resetType.contains(MAC))
+            reset.add(Registers.SOFTRST.RSTMAC);
+        if (resetType.contains(POWER_MANAGEMENT))
+            reset.add(Registers.SOFTRST.RSTPWR);
+        if (resetType.contains(BASE_BAND))
+            reset.add(Registers.SOFTRST.RSTBB);
+
+        performSoftReset(reset);
+
+        if (resetType.contains(RF)) {
+            EnumSet<Registers.RFCTL> rfReset = null;
+            rfReset.add(Registers.RFCTL.RFRST);
+
+            performRfReset(rfReset);
         }
+
     }
+
+    private int a = 0;
+
+    private void performSoftReset(EnumSet<Registers.SOFTRST> reset)
+    {
+        reset.forEach(b ->
+                      {
+                          a = a | b.getBit();
+                      });
+    }
+
+    private void performRfReset(EnumSet<Registers.RFCTL> rfReset)
+    {
+
+    }
+
 }

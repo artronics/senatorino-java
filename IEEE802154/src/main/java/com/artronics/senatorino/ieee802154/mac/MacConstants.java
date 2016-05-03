@@ -20,7 +20,7 @@ public enum MacConstants
      * <dt>Value: </dt><dd>{@link MacConstants#aNumSuperframeSlots} X {@link MacConstants#aBaseSlotDuration}</dd>
      * </dl>
      */
-    aBaseSuperframeDuration(MacConstants.aNumSuperframeSlots.value * MacConstants.aBaseSlotDuration.value),
+//    aBaseSuperframeDuration(MacConstants.aNumSuperframeSlots.value * MacConstants.aBaseSlotDuration.value),
 
     /**
      * The number of slots contained in any superframe.

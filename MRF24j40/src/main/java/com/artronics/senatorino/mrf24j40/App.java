@@ -1,5 +1,6 @@
 package com.artronics.senatorino.mrf24j40;
 
+import com.artronics.senatorino.mrf24j40.registers.Registers;
 import com.artronics.senatorino.mrf24j40.spi.MRF24J40;
 import com.pi4j.io.spi.SpiChannel;
 import com.pi4j.io.spi.SpiDevice;
@@ -46,13 +47,13 @@ public class App
         System.out.println(((result[0] << 8) | result[1]) & 0x3FF);
 
         MRF24J40 mrf24J40 = new MRF24J40(spi);
-        int data = mrf24J40.read(MRF24J40.ControlRegisters.AKCTMOUT);
-        System.out.println(Integer.toHexString(data));
+//        int data = mrf24J40.read(Registers.ControlReg.AKCTMOUT);
+//        System.out.println(Integer.toHexString(data));
         System.out.println("write 50");
-        mrf24J40.write(MRF24J40.ControlRegisters.AKCTMOUT, (byte) 50);
+//        mrf24J40.write(MRF24J40.ControlRegisters.AKCTMOUT, (byte) 50);
 
-        data = mrf24J40.read(MRF24J40.ControlRegisters.AKCTMOUT);
-        System.out.println(Integer.toHexString(data));
+//        data = mrf24J40.read(MRF24J40.ControlRegisters.AKCTMOUT);
+//        System.out.println(Integer.toHexString(data));
     }
 
     public static String bytesToBinary(byte[] bytes)
