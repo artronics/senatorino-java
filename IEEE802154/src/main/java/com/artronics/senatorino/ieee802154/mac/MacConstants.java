@@ -1,7 +1,7 @@
 package com.artronics.senatorino.ieee802154.mac;
 
 /**
- * Mac Constants described in <em>section 6.4.2</em> of standard.
+ * MacDefinitions Constants described in <em>section 6.4.2</em> of standard.
  */
 public enum MacConstants
 {
