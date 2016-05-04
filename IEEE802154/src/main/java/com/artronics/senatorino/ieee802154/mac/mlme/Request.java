@@ -1,6 +1,6 @@
 package com.artronics.senatorino.ieee802154.mac.mlme;
 
-public interface Request<T extends Primitive>
+public interface Request<T, P>
 {
-    void request(T primitive);
+    P request(T request);
 }
