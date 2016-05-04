@@ -1,12 +1,11 @@
 package com.artronics.senatorino.ieee802154.mac.scan;
 
 import com.artronics.senatorino.ieee802154.mac.MacDefinitions;
-import com.artronics.senatorino.ieee802154.mac.mlme.Primitive;
 import com.artronics.senatorino.ieee802154.mac.security.SecurityDto;
 
 import java.util.EnumSet;
 
-public class ScanPrimitive implements Primitive
+public class ScanReq
 {
     public enum Type
     {
@@ -22,7 +21,7 @@ public class ScanPrimitive implements Primitive
     private final int channelPage;
     private final SecurityDto security;
 
-    private ScanPrimitive(Builder builder)
+    private ScanReq(Builder builder)
     {
         this.scanType = builder.scanType;
         this.scanChannels = builder.scanChannels;
@@ -70,9 +69,9 @@ public class ScanPrimitive implements Primitive
             this.scanType = scanType;
         }
 
-        public ScanPrimitive build()
+        public ScanReq build()
         {
-            return new ScanPrimitive(this);
+            return new ScanReq(this);
         }
 
         public Builder scanChannels(EnumSet<MacDefinitions.macChannels> scanChannels)
