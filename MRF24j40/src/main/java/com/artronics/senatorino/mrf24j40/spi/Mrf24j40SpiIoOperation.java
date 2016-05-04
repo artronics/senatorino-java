@@ -1,13 +1,36 @@
 package com.artronics.senatorino.mrf24j40.spi;
 
 import com.artronics.senatorino.mrf24j40.registers.Registers;
+import com.pi4j.io.spi.SpiChannel;
 import com.pi4j.io.spi.SpiDevice;
+import com.pi4j.io.spi.impl.SpiDeviceImpl;
 
 import java.io.IOException;
 
 public class Mrf24j40SpiIoOperation implements SpiIoOperation
 {
-    private SpiDevice spi;
+
+    private final SpiDevice spi;
+
+    public Mrf24j40SpiIoOperation(Mrf24j40SpiIoOperation.spiChannel spiChannel, int spiSpeed) throws IOException
+    {
+        SpiChannel deviceSpiChannel;
+
+        switch (spiChannel) {
+            case CS0:
+                deviceSpiChannel = SpiChannel.CS0;
+                break;
+            case CS1:
+                deviceSpiChannel = SpiChannel.CS1;
+                break;
+            default:
+                deviceSpiChannel = SpiChannel.CS0;
+
+        }
+
+        this.spi = new SpiDeviceImpl(deviceSpiChannel, spiSpeed);
+    }
+
 
     public Mrf24j40SpiIoOperation(SpiDevice spi)
     {

@@ -3,6 +3,7 @@ package com.artronics.senatorino.mrf24j40.transceiver;
 import com.artronics.senatorino.ieee802154.transceiver.Transceiver;
 import com.artronics.senatorino.mrf24j40.registers.RegisterBits;
 import com.artronics.senatorino.mrf24j40.registers.Registers;
+import com.artronics.senatorino.mrf24j40.spi.Mrf24j40SpiIoOperation;
 import com.artronics.senatorino.mrf24j40.spi.SpiIoOperation;
 
 import java.io.IOException;
@@ -12,7 +13,22 @@ import static com.artronics.senatorino.ieee802154.mac.reset.Reset.ResetType.*;
 
 public class Mrf24j40Transceiver implements Transceiver
 {
-    private SpiIoOperation spi;
+    private final SpiIoOperation spi;
+
+    public Mrf24j40Transceiver(SpiIoOperation.spiChannel spiChannel, int spiSpeed) throws IOException
+    {
+        spi = new Mrf24j40SpiIoOperation(spiChannel, spiSpeed);
+    }
+
+    public Mrf24j40Transceiver(SpiIoOperation.spiChannel spiChannel) throws IOException
+    {
+        spi = new Mrf24j40SpiIoOperation(spiChannel, SpiIoOperation.DEFAULT_SPI_SPEED);
+    }
+
+    public Mrf24j40Transceiver() throws IOException
+    {
+        spi = new Mrf24j40SpiIoOperation(SpiIoOperation.spiChannel.CS0, SpiIoOperation.DEFAULT_SPI_SPEED);
+    }
 
     public Mrf24j40Transceiver(SpiIoOperation spi)
     {
