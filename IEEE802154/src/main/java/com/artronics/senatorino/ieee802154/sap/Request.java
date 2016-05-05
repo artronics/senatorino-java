@@ -1,4 +1,4 @@
-package com.artronics.senatorino.ieee802154.mac.mlme;
+package com.artronics.senatorino.ieee802154.sap;
 
 public interface Request<T, P>
 {

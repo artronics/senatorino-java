@@ -1,4 +1,6 @@
-package com.artronics.senatorino.ieee802154.mac;
+package com.artronics.senatorino.ieee802154.pib;
+
+import com.artronics.senatorino.ieee802154.exceptions.PibValidationException;
 
 /**
  * <p>The MAC PIB comprises the attributes required to manage the MAC sublayer of a device. The attributes contained in
@@ -18,9 +20,20 @@ public class MacPib
      * <dt>Default: </dt><dd>Implementation specific</dd>
      * </dl>
      */
-    byte[] macExtendedAddress = new byte[4];
+//    byte[] macExtendedAddress = new byte[4];
+    Pib<byte[]> macExtendedAddress =
+            new Pib(Pib.Name.macExtendedAddress, null, Pib.Layer.MAC, false, new PibValidator<byte[]>()
+            {
+                @Override
+                public void validate(Pib<byte[]> pib) throws PibValidationException
+                {
+                    if (pib.getValue() != null && pib.getValue().length != 4) {
+                        throw new PibValidationException(pib);
+                    }
+                }
+            });
 
-    public byte[] getMacExtendedAddress()
+    public Pib<byte[]> getMacExtendedAddress()
     {
         return macExtendedAddress;
     }
