@@ -1,5 +1,6 @@
 /target
 .idea
+/core/target
 /MRF24j40/target
 /IEEE802154/target
 *.iml
