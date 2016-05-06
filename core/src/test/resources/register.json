@@ -1,0 +1,11 @@
+{
+  "deviceName": "MRF24J40",
+  "registerBankName": "controlRegisters",
+  "range": "0x00:0xFF",
+  "registers": [
+    {
+      "name": "BAR",
+      "address": "0x02"
+    }
+  ]
+}

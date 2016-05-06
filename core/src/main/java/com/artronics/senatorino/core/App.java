@@ -9,6 +9,5 @@ public class App
     public static void main(String[] args) throws IOException
     {
         Senatorino sen = new Senatorino(new Mrf24j40Transceiver());
-
     }
 }
