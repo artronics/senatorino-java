@@ -10,6 +10,16 @@ public class Register
     private int address;
     List<RegisterBit> bits;
 
+    public Register()
+    {
+    }
+
+    public Register(String name, int address)
+    {
+        this.name = name;
+        this.address = address;
+    }
+
     public String getName()
     {
         return name;
