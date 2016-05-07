@@ -1,5 +1,6 @@
-package com.artronics.embedded.register;
+package com.artronics.embedded.register.parser;
 
+import com.artronics.embedded.register.RegisterJsonParserException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
