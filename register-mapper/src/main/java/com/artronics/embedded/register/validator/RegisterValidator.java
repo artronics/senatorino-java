@@ -1,4 +1,6 @@
-package com.artronics.senatorino.core.register;
+package com.artronics.embedded.register.validator;
+
+import com.artronics.embedded.register.RegisterJsonParserException;
 
 import java.util.regex.Pattern;
 

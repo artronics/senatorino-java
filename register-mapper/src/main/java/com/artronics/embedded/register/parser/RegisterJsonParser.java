@@ -1,5 +1,8 @@
-package com.artronics.senatorino.core.register;
+package com.artronics.embedded.register.parser;
 
+import com.artronics.embedded.register.RegisterJsonParserException;
+import com.artronics.embedded.register.validator.RegisterValidator;
+import com.artronics.embedded.register.validator.RegisterValidatorImpl;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;

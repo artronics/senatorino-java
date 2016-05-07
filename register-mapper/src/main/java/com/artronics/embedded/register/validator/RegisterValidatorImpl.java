@@ -1,4 +1,6 @@
-package com.artronics.senatorino.core.register;
+package com.artronics.embedded.register.validator;
+
+import com.artronics.embedded.register.RegisterJsonParserException;
 
 import java.util.regex.Matcher;
 
@@ -12,7 +14,7 @@ public class RegisterValidatorImpl implements RegisterValidator
 
         if (!matcher.matches())
             throw new RegisterJsonParserException("Invalid register's name for: \""
-                                                          + name + "\"\n" + RegisterValidator.NAME_VALIDAOTR_RULES);
+                                                          + name + "\"\n" + NAME_VALIDAOTR_RULES);
     }
 
     @Override

@@ -1,18 +1,20 @@
-package com.artronics.senatorino.core.register;
+package com.artronics.embedded.register;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
 
 public class RegisterJsonParserTest
 {
@@ -26,7 +28,6 @@ public class RegisterJsonParserTest
     @Before
     public void setUp() throws Exception
     {
-        FileInputStream f = new FileInputStream("src/test/resources/register.json");
         out = new ByteArrayOutputStream();
     }
 
@@ -70,7 +71,7 @@ public class RegisterJsonParserTest
         String actJson = new String(out.toString());
         actJson = actJson.trim().replaceAll("\\n| +", "");
 
-        assertThat(actJson, equalTo(expStr));
+        Assert.assertThat(actJson, CoreMatchers.equalTo(expStr));
     }
 
     @Test
@@ -84,7 +85,7 @@ public class RegisterJsonParserTest
         String actJson = new String(out.toString());
         actJson = actJson.trim().replaceAll("\\n| +", "");
 
-        assertThat(actJson, equalTo(expStr));
+        Assert.assertThat(actJson, CoreMatchers.equalTo(expStr));
     }
 
     /*

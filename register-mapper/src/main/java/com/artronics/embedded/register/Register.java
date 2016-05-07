@@ -1,4 +1,4 @@
-package com.artronics.senatorino.core.register;
+package com.artronics.embedded.register;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
 

@@ -12,6 +12,7 @@
         <module>IEEE802154</module>
         <module>MRF24j40</module>
         <module>core</module>
+        <module>register-mapper</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
