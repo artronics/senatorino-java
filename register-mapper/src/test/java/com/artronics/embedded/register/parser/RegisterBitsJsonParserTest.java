@@ -1,6 +1,7 @@
 package com.artronics.embedded.register.parser;
 
 import com.artronics.embedded.register.RegisterJsonParserException;
+import com.artronics.embedded.register.validator.RegisterBitsValidator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -169,4 +170,28 @@ public class RegisterBitsJsonParserTest
         parser.parseJsonNode(createBitsNode(bits));
     }
 
+    @Test(expected = RegisterJsonParserException.class)
+    public void it_should_thr_exp_if_upper_is_greater_than_length() throws Exception
+    {
+        //default length is 8
+        name = "AS3S<1:" + RegisterBitsValidator.DEFAULT_LENGTH + ">";
+        String bits = "{\"bits\":[{\"name\":\"" + name + "\"}]}";
+        parser.parseJsonNode(createBitsNode(bits));
+    }
+
+    @Test(expected = RegisterJsonParserException.class)
+    public void it_should_thr_exp_if_ordinal_is_greater_than_length() throws Exception
+    {
+        name = "AS3S(8)";
+        String bits = "{\"bits\":[{\"name\":\"" + name + "\"}]}";
+        parser.parseJsonNode(createBitsNode(bits));
+    }
+
+    @Test(expected = RegisterJsonParserException.class)
+    public void it_should_thr_exp_if_lower_if_mask_is_greater_than_2_to_the_power_length() throws Exception
+    {
+        name = "AS3S<0x100>";
+        String bits = "{\"bits\":[{\"name\":\"" + name + "\"}]}";
+        parser.parseJsonNode(createBitsNode(bits));
+    }
 }

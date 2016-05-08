@@ -45,31 +45,55 @@ public class RegisterBitsJsonParser
             String name = bit.get("name").asText();
             Matcher matcher = validator.validateName(name);
 
-            bitName = matcher.group(1);
-            String ordinalGrp = matcher.group(5);
-            if (ordinalGrp != null) {
-                ordinal = Integer.parseInt(matcher.group(6));
-            }else {
-                String rangeOrMaskGrp = matcher.group(7);
-                //range
-                if (rangeOrMaskGrp.contains(":")) {
-                    lower = Integer.parseInt(matcher.group(10));
-                    upper = Integer.parseInt(matcher.group(11));
-                    if (lower > upper)
-                        throw new RegisterJsonParserException("Parser error in bit name: \""
-                                                                      + bitName + "\". " +
-                                                                      "Lower bound is greater than " +
-                                                                      "upper bound");
-                }
-                //mask
-                else {
-                    mask = Integer.decode(matcher.group(8));
-                }
-            }
+            mask = evalNameAndCalcMask(matcher);
         }
 
 
         return bits;
+    }
+
+    private Integer evalNameAndCalcMask(Matcher matcher) throws RegisterJsonParserException
+    {
+        bitName = matcher.group(1);
+        String ordinalGrp = matcher.group(5);
+        if (ordinalGrp != null) {
+            ordinal = Integer.parseInt(matcher.group(6));
+            if (ordinal >= length)
+                throw new RegisterJsonParserException("Parser error in bit name: \""
+                                                              + bitName + "\". " +
+                                                              "ordinal must be less than" +
+                                                              "length which is: " + length);
+
+        }else {
+            String rangeOrMaskGrp = matcher.group(7);
+            //range
+            if (rangeOrMaskGrp.contains(":")) {
+                lower = Integer.parseInt(matcher.group(10));
+                upper = Integer.parseInt(matcher.group(11));
+                if (upper >= DEFAULT_LENGTH)
+                    throw new RegisterJsonParserException("Parser error in bit name: \""
+                                                                  + bitName + "\". " +
+                                                                  "Upper bound is greater than" +
+                                                                  "length which is: " + length);
+                if (lower > upper)
+                    throw new RegisterJsonParserException("Parser error in bit name: \""
+                                                                  + bitName + "\". " +
+                                                                  "Lower bound is greater than " +
+                                                                  "upper bound");
+            }
+            //mask
+            else {
+                mask = Integer.decode(matcher.group(8));
+                if (mask >= Math.pow(2, length))
+                    throw new RegisterJsonParserException("Parser error in bit name: \""
+                                                                  + bitName + "\". " +
+                                                                  "mask value is greater than" +
+                                                                  " 2^length. length is: " + length);
+                return mask;
+            }
+        }
+
+        return null;
     }
 
     public String getBitName()
