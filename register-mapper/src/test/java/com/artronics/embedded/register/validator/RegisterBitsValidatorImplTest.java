@@ -4,25 +4,57 @@ import com.artronics.embedded.register.RegisterJsonParserException;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 public class RegisterBitsValidatorImplTest
 {
-    private RegisterBitsValidator validator;
+    private static final String ORDINAL = "(1)";
+    private static final String MASK = "<0x0F>";
+    private static final String RANGE = "<2:4>";
+
+    private RegisterBitsValidatorImpl validator;
     private String name;
 
     @Before
     public void setUp() throws Exception
     {
         validator = new RegisterBitsValidatorImpl();
-
     }
 
     @Test
-    public void name() throws Exception
+    public void it_should_getName() throws Exception
     {
-        System.out.println(RegisterBitsValidator.NAME_PATTERN);
-
+        name = "ASD";
+        assertGetBitName(name);
     }
+
+    @Test
+    public void it_should_getName_where_name_contains_nums() throws Exception
+    {
+        name = "A2S4D";
+        assertGetBitName(name);
+    }
+
+    private void assertGetBitName(String name) throws RegisterJsonParserException
+    {
+        validator.validateName(name + ORDINAL);
+        assertThat(validator.getBitName(), equalTo(name));
+
+        validator.validateName(name + RANGE);
+        assertThat(validator.getBitName(), equalTo(name));
+
+        validator.validateName(name + MASK);
+        assertThat(validator.getBitName(), equalTo(name));
+    }
+
     /* Name Match */
+    @Test(expected = RegisterJsonParserException.class)
+    public void it_should_throw_exp_if_name_contains_lower_case_letter() throws Exception
+    {
+        name = "1LsD";
+        validator.validateName(name);
+    }
 
     @Test(expected = RegisterJsonParserException.class)
     public void it_should_throw_exp_if_name_starts_with_num() throws Exception

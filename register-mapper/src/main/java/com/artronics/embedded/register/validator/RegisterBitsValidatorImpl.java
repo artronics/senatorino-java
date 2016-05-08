@@ -8,9 +8,13 @@ public class RegisterBitsValidatorImpl implements RegisterBitsValidator
 {
     private final int length;
 
-    private String name;
+    private String bitName;
+
+    private int mask;
+
     private int upper;
     private int lower;
+    private int ordinal;
 
     public RegisterBitsValidatorImpl()
     {
@@ -25,7 +29,13 @@ public class RegisterBitsValidatorImpl implements RegisterBitsValidator
             throw new RegisterJsonParserException(
                     "Parser error in \"bits\" field. bit: \"" + name + "\"");
 
+        bitName = matcher.group(1);
+        System.out.println(name);
 
     }
 
+    public String getBitName()
+    {
+        return bitName;
+    }
 }
