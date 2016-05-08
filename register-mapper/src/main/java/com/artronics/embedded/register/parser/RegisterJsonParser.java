@@ -21,7 +21,8 @@ public class RegisterJsonParser
 
     private static final ObjectMapper OM = new ObjectMapper();
 
-    public final RegisterValidator validator;
+    private final RegisterValidator validator;
+    private final RegisterBitsJsonParser bitsParser;
 
     private final InputStream in;
     private final OutputStream out;
@@ -34,6 +35,7 @@ public class RegisterJsonParser
         this.in = in;
         this.out = out;
         this.validator = new RegisterValidatorImpl();
+        this.bitsParser = new RegisterBitsJsonParser();
     }
 
     public void parse() throws IOException
@@ -60,6 +62,11 @@ public class RegisterJsonParser
             validate(name, address);
 
             if (name.substring(name.length() - 1).equals("*")) {
+                if (reg.has("bits"))
+                    throw new RegisterJsonParserException("Parser error in register: \"" + name + "\"" +
+                                                                  "Register with address" +
+                                                                  " range must not contain " +
+                                                                  "\"bits\" field.");
 
                 int startAdd = Integer.decode(address.substring(0, address.indexOf(":")));
                 int endAdd = Integer.decode(address.substring(address.indexOf(":") + 1));
@@ -82,6 +89,16 @@ public class RegisterJsonParser
                 //It's the same address but changing the format
                 String newAdd = String.format("0x%08X", Integer.decode(address));
                 ((ObjectNode) regCopy).put("address", newAdd);
+                if (regCopy.has("bits")) {
+                    if (!regCopy.path("bits").isArray())
+                        throw new RegisterJsonParserException("Parser error for register: \"" +
+                                                                      name + "\"" +
+                                                                      "\"bits\" field must be array");
+
+                    ArrayNode bits = (ArrayNode) regCopy.path("bits");
+                    ArrayNode newbits = bitsParser.parseJsonNode(bits);
+                    ((ObjectNode) regCopy).set("bits", newbits);
+                }
 
                 newRegisters.add(regCopy);
             }

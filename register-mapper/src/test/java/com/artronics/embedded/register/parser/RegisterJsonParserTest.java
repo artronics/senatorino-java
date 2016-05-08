@@ -6,8 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,6 +14,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 public class RegisterJsonParserTest
 {
@@ -72,7 +73,7 @@ public class RegisterJsonParserTest
         String actJson = new String(out.toString());
         actJson = actJson.trim().replaceAll("\\n| +", "");
 
-        Assert.assertThat(actJson, CoreMatchers.equalTo(expStr));
+        assertThat(actJson, equalTo(expStr));
     }
 
     @Test
@@ -86,12 +87,32 @@ public class RegisterJsonParserTest
         String actJson = new String(out.toString());
         actJson = actJson.trim().replaceAll("\\n| +", "");
 
-        Assert.assertThat(actJson, CoreMatchers.equalTo(expStr));
+        assertThat(actJson, equalTo(expStr));
+    }
+
+    @Test(expected = RegisterJsonParserException.class)
+    public void register_with_range_must_not_contain_bits_field() throws Exception
+    {
+        String actStr = "{\"registers\":[{\"name\":\"FOO*\",\"address\":\"0x0A:0x12\"" +
+                ",\"bits\":[]}]}";
+
+        parser = new RegisterJsonParser(json(actStr), out);
+        parser.parse();
+    }
+
+    @Test(expected = RegisterJsonParserException.class)
+    public void bits_field_must_be_an_array() throws Exception
+    {
+        String actStr = "{\"registers\":[{\"name\":\"FOO\",\"address\":\"0x0A\"" +
+                ",\"bits\":{}}]}";
+
+        parser = new RegisterJsonParser(json(actStr), out);
+        parser.parse();
     }
 
     /*
-                VALIDATION
-             */
+                    VALIDATION
+                 */
     @Test(expected = RegisterJsonParserException.class)
     public void it_should_throw_exp_if_name_field_has_low_case_letter() throws Exception
     {
